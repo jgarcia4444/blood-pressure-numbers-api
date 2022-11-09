@@ -4,11 +4,14 @@ class SessionsController < ApplicationController
             login_info = params[:login_info]
             if login_info[:email]
                 email = login_info[:email]
-                found_user = User.find_by(email: email)
+                found_user = User.find_by(email: email.downcase)
                 if found_user
+                    puts "User was found"
                     if login_info[:password]
+                        puts "Password info was found"
                         passed_password = login_info[:password]
                         if found_user.authenticate(passed_password)
+                            puts "User Password correct"
                             render :json => {
                                 success: true,
                                 userInfo: {
@@ -17,6 +20,7 @@ class SessionsController < ApplicationController
                                 }
                             }
                         else
+                            puts "User password incorrect"
                             incorrect_password = {
                                 errorType: "PASSWORD",
                                 message: "Incorrect password."
@@ -27,6 +31,7 @@ class SessionsController < ApplicationController
                             }
                         end
                     else
+                        puts "Password info not found"
                         password_error = {
                             errorType: "PASSWORD",
                             message: "A password must be present to login."
@@ -37,6 +42,7 @@ class SessionsController < ApplicationController
                         }
                     end
                 else
+                    puts "User not found"
                     user_found_error = {
                         errorType: "GENERAL",
                         message: "Unable to find a user with the given identifier."
@@ -57,9 +63,9 @@ class SessionsController < ApplicationController
                 }
             end
         else 
-            info_error: {
+            info_error = {
                 errorType: "PARAMS",
-                message: "Information was sent inproperly to login."
+                message: "Information was sent improperly to login."
             }
             render :json => {
                 success: false,
