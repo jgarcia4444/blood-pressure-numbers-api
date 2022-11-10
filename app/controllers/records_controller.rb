@@ -48,7 +48,8 @@ class RecordsController < ApplicationController
                                 systolic: persisted_record.systolic,
                                 diastolic: persisted_record.diastolic,
                                 rightArmRecorded: persisted_record.right_arm_recorded,
-                                notes: persisted_record.notes
+                                notes: persisted_record.notes,
+                                dateTimeTaken: persisted_record.created_at
                             }
                         }
                     else
