@@ -7,4 +7,6 @@ Rails.application.routes.draw do
   post '/users/login', to: 'sessions#login'
 
   post 'users/:user_id/records', to: 'records#create'
+
+  get 'records/:user_id', to: "records#index"
 end

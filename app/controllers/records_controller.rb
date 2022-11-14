@@ -7,7 +7,7 @@ class RecordsController < ApplicationController
                 formatted_records = found_user.format_user_records
                 render :json => {
                     success: true,
-                    records: formatted_records
+                    userRecords: formatted_records
                 }
             else 
                 find_user_error = {
