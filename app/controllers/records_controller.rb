@@ -2,7 +2,7 @@ class RecordsController < ApplicationController
     def index
         if params[:user_id]
             user_id = params[:user_id]
-            found_user = User.find(id: user_id)
+            found_user = User.find_by(id: user_id.to_i)
             if found_user
                 formatted_records = found_user.format_user_records
                 render :json => {
