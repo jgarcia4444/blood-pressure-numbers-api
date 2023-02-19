@@ -58,6 +58,49 @@ class UsersController < ApplicationController
         end
     end
 
+    def send_user_code
+        if params[:user_id]
+            user_id = params[:user_id]
+            user = User.find_by(user_id: user_id.to_i)
+            if user
+                ota_code = OtaCode.generate_code
+                if ota_code.count == 6
+                    created_ota = OtaCode.create(user_id: user_id.to_i, code: ota_code)
+                    # send this code via email 
+                    # when the email is sent render back a success json message. That can be held in a redux property that is not persisted.
+                    
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "There was an error creating the ota code."
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "No user record found with the given information."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "User information must be sent in order to process this request"
+                }
+            }
+        end
+    end
+
+    def verify_user_code
+    end
+
+    def change_password
+    end
+
     private
         def user_params
           params.require(:new_user_info).permit(:email, :password)  

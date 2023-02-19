@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_18_000032) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_19_052740) do
+  create_table "ota_codes", force: :cascade do |t|
+    t.string "code"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "records", force: :cascade do |t|
     t.integer "user_id"
     t.integer "systolic"
