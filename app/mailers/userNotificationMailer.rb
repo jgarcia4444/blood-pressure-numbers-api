@@ -1,4 +1,4 @@
-class UserNotifierMailer < ApplicationMailer
+class UserNotificationMailer < ApplicationMailer
 
     default from: "bloodpressurenumbers2020@gmail.com"
 

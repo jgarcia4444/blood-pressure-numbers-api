@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   post 'users/:user_id/records', to: 'records#create'
 
   get 'records/:user_id', to: "records#index"
+
+  post 'users/verification-code', to: 'users#send_user_code'
 end

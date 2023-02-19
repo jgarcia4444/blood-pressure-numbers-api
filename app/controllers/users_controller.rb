@@ -61,10 +61,10 @@ class UsersController < ApplicationController
     def send_user_code
         if params[:user_id]
             user_id = params[:user_id]
-            user = User.find_by(user_id: user_id.to_i)
+            user = User.find_by(id: user_id.to_i)
             if user
                 ota_code = OtaCode.generate_code
-                if ota_code.count == 6
+                if ota_code.split('').count == 6
                     created_ota = OtaCode.create(user_id: user_id.to_i, code: ota_code)
                     if created_ota.valid?
                         email_info = {
