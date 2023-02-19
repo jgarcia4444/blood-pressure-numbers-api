@@ -62,6 +62,10 @@ class UsersController < ApplicationController
         if params[:user_id]
             user_id = params[:user_id]
             user = User.find_by(id: user_id.to_i)
+            users_codes = OtaCode.all.select {|ota| ota.user_id == user_id.to_i}
+            if user_codes.count > 0
+                user_codes.destroy_all
+            end
             if user
                 ota_code = OtaCode.generate_code
                 if ota_code.split('').count == 6
@@ -121,6 +125,59 @@ class UsersController < ApplicationController
     end
 
     def verify_user_code
+        if params[:user_id]
+            user_id = params[:user_id].to_i
+            user = User.find_by(id: user_id)
+            if user 
+                if params[:ota_code]
+                    ota_code = params[:ota_code]
+                    if ota_code.split('').count == 6
+                        user_ota_code = OtaCode.find_by(user_id: user_id)
+                        if user_ota_code.code == ota_code
+                            user.update(code_verified: true)
+                            render :json => {
+                                success: true,
+                            }
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "Incorrect Code"
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "The OTA code is the incorrect length."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "A code was not sent to the route."
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "No user was found with the given information."
+                    } 
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "User information must be sent to access this route."
+                }
+            }
+        end
     end
 
     def change_password
