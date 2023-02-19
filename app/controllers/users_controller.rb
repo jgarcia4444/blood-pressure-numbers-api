@@ -66,9 +66,34 @@ class UsersController < ApplicationController
                 ota_code = OtaCode.generate_code
                 if ota_code.count == 6
                     created_ota = OtaCode.create(user_id: user_id.to_i, code: ota_code)
-                    # send this code via email 
-                    # when the email is sent render back a success json message. That can be held in a redux property that is not persisted.
-                    
+                    if created_ota.valid?
+                        email_info = {
+                            ota_code: created_ota.code,
+                            user_email: user.email,
+                        }
+                        user.update(code_verified: false)
+                        begin
+                            UserNotificationMailer.send_verification_code(email_info).deliver_now
+                            render :json => {
+                                success: true,
+                            }
+                        rescue StandardError => e
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "An error occured sending the code through email.",
+                                    specificError: e.inspect
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "There was an error persisting the ota code information."
+                            }
+                        }
+                    end
                 else
                     render :json => {
                         success: false,
