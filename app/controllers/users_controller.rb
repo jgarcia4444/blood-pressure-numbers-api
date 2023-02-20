@@ -63,8 +63,8 @@ class UsersController < ApplicationController
             user_id = params[:user_id]
             user = User.find_by(id: user_id.to_i)
             users_codes = OtaCode.all.select {|ota| ota.user_id == user_id.to_i}
-            if user_codes.count > 0
-                user_codes.destroy_all
+            if users_codes.count > 0
+                users_codes.each {|code| code.destroy}
             end
             if user
                 ota_code = OtaCode.generate_code
@@ -137,6 +137,7 @@ class UsersController < ApplicationController
                             user.update(code_verified: true)
                             render :json => {
                                 success: true,
+                                userErrors: user.errors.full_messages
                             }
                         else
                             render :json => {
@@ -190,7 +191,7 @@ class UsersController < ApplicationController
                         new_password = params[:new_password]
                         if new_password != user.password
                             if new_password.split('').count > 7
-                                user.update(password: new_password, code_verified: false)
+                                user.update(password: new_password)
                                 if user.valid?
                                     render :json => {
                                         success: true,
@@ -244,7 +245,7 @@ class UsersController < ApplicationController
                 }
             end
         else
-            render: json => {
+            render :json => {
                 success: false,
                 error: {
                     message: "User information is needed to access this route."

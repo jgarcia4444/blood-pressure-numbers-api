@@ -3,7 +3,6 @@ class User < ApplicationRecord
     has_many :records, dependent: :destroy
 
     validates :email, uniqueness: true
-    validates :password, presence: true
 
 
     def format_user_records
