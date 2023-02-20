@@ -181,6 +181,76 @@ class UsersController < ApplicationController
     end
 
     def change_password
+        if params[:user_id]
+            user_id = params[:user_id].to_i
+            user = User.find_by(id: user_id)
+            if user
+                if user.code_verified == true
+                    if params[:new_password]
+                        new_password = params[:new_password]
+                        if new_password != user.password
+                            if new_password.split('').count > 7
+                                user.update(password: new_password, code_verified: false)
+                                if user.valid?
+                                    render :json => {
+                                        success: true,
+                                    }
+                                else
+                                    render :json => {
+                                        success: false,
+                                        error: {
+                                            message: "An error occurred while updating the users password."
+                                        }
+                                    }
+                                end
+                            else
+                                render :json => {
+                                    success: false,
+                                    error: {
+                                        message: "Password must be 8 characters or longer."
+                                    }
+                                }
+                            end
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "User must not use an old password"
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "A new password must be sent to update the user."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "User must verify with a one time passcode to complete this action."
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "User was not found with the given information."
+                    }
+                }
+            end
+        else
+            render: json => {
+                success: false,
+                error: {
+                    message: "User information is needed to access this route."
+                }
+            }
+        end
     end
 
     private
