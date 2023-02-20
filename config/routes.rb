@@ -11,4 +11,6 @@ Rails.application.routes.draw do
   get 'records/:user_id', to: "records#index"
 
   post 'users/verification-code', to: 'users#send_user_code'
+  post 'users/check-code-verification', "users#verify_user_code"
+  put 'users/update-password', to "users#change_password"
 end
