@@ -15,7 +15,8 @@ class User < ApplicationRecord
                     diastolic: record.diastolic,
                     notes: record.notes,
                     rightArmRecorded: record.right_arm_recorded,
-                    dateRecorded: record.created_at
+                    dateRecorded: record.created_at,
+                    id: record.id
                 }
             end
         end

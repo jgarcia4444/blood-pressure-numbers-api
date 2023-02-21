@@ -45,6 +45,7 @@ class RecordsController < ApplicationController
                         render :json => {
                             success: true,
                             persistedRecord: {
+                                id: persisted_record.id,
                                 systolic: persisted_record.systolic,
                                 diastolic: persisted_record.diastolic,
                                 rightArmRecorded: persisted_record.right_arm_recorded,
