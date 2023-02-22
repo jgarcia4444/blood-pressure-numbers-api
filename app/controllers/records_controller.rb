@@ -96,6 +96,53 @@ class RecordsController < ApplicationController
         end
     end
 
+    def destroy
+        if params[:user_id]
+            user_id = params[:user_id]
+            if params[:record_id]
+                record_id = params[:record_id]
+                record = Record.find_by(id: record_id.to_i, user_id: user_id.to_i)
+                if record
+                    record_destroyed = record.destroy
+                    if record_destroyed
+                        render :json => {
+                            success: true,
+                            userRecordId: record_destroyed.id,
+                        }
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "An error occurred while attempting to destroy the record."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "Record was not found with the given information"
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "A record id must be present with this route."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "A user id must be present with this route."
+                }
+            }
+        end
+    end
+
     private
         def record_params
             params.require(:new_record_info).permit(:systolic, :diastolic, :notes, :right_arm_recorded)

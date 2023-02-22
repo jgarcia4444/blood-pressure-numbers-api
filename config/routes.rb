@@ -13,4 +13,6 @@ Rails.application.routes.draw do
   post 'users/verification-code', to: 'users#send_user_code'
   post 'users/check-code-verification', to: "users#verify_user_code"
   put 'users/update-password', to: "users#change_password"
+
+  delete 'records/delete/:user_id/:record_id', to: 'records#destroy'
 end
