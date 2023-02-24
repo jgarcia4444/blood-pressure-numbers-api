@@ -15,4 +15,5 @@ Rails.application.routes.draw do
   put 'users/update-password', to: "users#change_password"
 
   delete 'records/delete/:user_id/:record_id', to: 'records#destroy'
+  put 'records/update', to: 'records#update'
 end

@@ -143,6 +143,114 @@ class RecordsController < ApplicationController
         end
     end
 
+    def update 
+        if params[:update_record_info]
+            update_info = params[:update_record_info]
+            if update_info[:user_id]
+                user_id = update_info[:user_id]
+                user = User.find_by(id: user_id.to_i)
+                if user
+                    if update_info[:systolic]
+                        systolic = update_info[:systolic]
+                        if update_info[:diastolic]
+                            diastolic = updat_info[:diastolic]
+                            if update_info[:notes]
+                                notes = update_info[:notes]
+                                if update_info[:right_arm_recorded]
+                                    right_arm_recorded = update_info[:right_arm_recorded]
+                                    if update_info[:record_id]
+                                        record_id = update_info[:record_id]
+                                        record = Record.find_by(id: record_id)
+                                        if record
+                                            record.update(systolic: systolic, diastolic: diastolic, notes: notes, right_arm_recorded: right_arm_recorded)
+                                            if record.valid?
+                                                render :json => {
+                                                    success: true,
+                                                    updatedRecord: record.format_for_frontend
+                                                }
+                                            else
+                                                render :json => {
+                                                    success: false,
+                                                    error: {
+                                                        message: "An error occurred while updating the record."
+                                                    }
+                                                }
+                                            end
+                                        else
+                                            render :json => {
+                                                success: false,
+                                                error: {
+                                                    message: "A record was not found with the given information."
+                                                }
+                                            }
+                                        end
+                                    else
+                                        render :json => {
+                                            success: false,
+                                            error: {
+                                                message: "The record id must be present to complete this request."
+                                            }
+                                        }
+                                    end
+                                else
+                                    render :json => {
+                                        success: false,
+                                        error: {
+                                            message: "The right arm recorded value must be present to complete this request."
+                                        }
+                                    }
+                                end
+                            else
+                                render :json => {
+                                    success: false,
+                                    error: {
+                                        message: "Notes must be present to finish this request."
+                                    }
+                                    
+                                }
+                            end
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "An input for diastolic must be present."
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "An input for systolic must be present."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "A user was not found with the given user id."
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "A user id must be present to complete this request."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "The required info was not formatted properly."
+                }
+            }
+        end
+    end
+
     private
         def record_params
             params.require(:new_record_info).permit(:systolic, :diastolic, :notes, :right_arm_recorded)
