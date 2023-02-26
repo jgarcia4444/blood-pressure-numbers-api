@@ -1,6 +1,8 @@
 class User < ApplicationRecord
     has_secure_password
     has_many :records, dependent: :destroy
+    has_one :day_streak, dependent: :destroy
+    has_one :permission, dependent: :destroy
 
     validates :email, uniqueness: true
 

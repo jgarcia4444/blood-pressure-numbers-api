@@ -10,9 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_19_061935) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_26_021310) do
+  create_table "day_streaks", force: :cascade do |t|
+    t.integer "days"
+    t.datetime "expires_at"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "ota_codes", force: :cascade do |t|
     t.string "code"
+    t.integer "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "permissions", force: :cascade do |t|
+    t.boolean "notifications"
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
