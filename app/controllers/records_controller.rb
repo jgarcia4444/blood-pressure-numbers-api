@@ -153,10 +153,10 @@ class RecordsController < ApplicationController
                     if update_info[:systolic]
                         systolic = update_info[:systolic]
                         if update_info[:diastolic]
-                            diastolic = updat_info[:diastolic]
+                            diastolic = update_info[:diastolic]
                             if update_info[:notes]
                                 notes = update_info[:notes]
-                                if update_info[:right_arm_recorded]
+                                if update_info[:right_arm_recorded] != nil
                                     right_arm_recorded = update_info[:right_arm_recorded]
                                     if update_info[:record_id]
                                         record_id = update_info[:record_id]

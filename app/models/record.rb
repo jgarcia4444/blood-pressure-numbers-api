@@ -7,7 +7,8 @@ class Record < ApplicationRecord
             systolic: self.systolic,
             notes: self.notes,
             id: self.id,
-            rightArmRecorded: self.right_arm_recorded
+            rightArmRecorded: self.right_arm_recorded,
+            dateRecorded: self.created_at,
         }
     end
 end
