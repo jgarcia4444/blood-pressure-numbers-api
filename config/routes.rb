@@ -18,4 +18,6 @@ Rails.application.routes.draw do
   put 'records/update', to: 'records#update'
 
   get '/day-streak/:user_id', to: 'day_streaks#show'
+  post '/day-streaks', to: "day_streaks#create"
+  put '/day-streak', to: "day_streaks#update"
 end
