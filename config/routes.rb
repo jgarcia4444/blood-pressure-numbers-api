@@ -16,4 +16,6 @@ Rails.application.routes.draw do
 
   delete 'records/delete/:user_id/:record_id', to: 'records#destroy'
   put 'records/update', to: 'records#update'
+
+  get '/day-streak/:user_id', to: 'day_streaks#show'
 end
