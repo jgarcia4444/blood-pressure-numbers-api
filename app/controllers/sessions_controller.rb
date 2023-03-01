@@ -31,7 +31,6 @@ class SessionsController < ApplicationController
                             }
                         end
                     else
-                        puts "Password info not found"
                         password_error = {
                             errorType: "PASSWORD",
                             message: "A password must be present to login."
@@ -42,10 +41,9 @@ class SessionsController < ApplicationController
                         }
                     end
                 else
-                    puts "User not found"
                     user_found_error = {
                         errorType: "GENERAL",
-                        message: "Unable to find a user with the given identifier."
+                        message: "No user found with this email."
                     }
                     render :json => {
                         success: false,
