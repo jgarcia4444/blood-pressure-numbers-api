@@ -251,6 +251,86 @@ class RecordsController < ApplicationController
         end
     end
 
+    def filtered_records
+        if params[:user_id]
+            user_id = params[:user_id].to_i
+            user = User.find_by(id: user_id)
+            if user 
+                user_records = user.records
+                if user_records.count > 0
+                    if params[:from_date]
+                        from_datetime = params[:from_date].to_datetime
+                        if from_datetime
+                            if params[:to_date]
+                                to_datetime = params[:to_date].to_datetime
+                                if to_datetime
+                                    filtered_records = user_records.select do |record|
+                                        if record.created_at >= from_datetime and record.created_at <= to_datetime
+                                            record
+                                        else
+                                            false
+                                        end
+                                    end
+                                    render :json => {
+                                        success: true,
+                                        filteredRecords: filtered_records,
+                                    }
+                                else
+                                    render :json => {
+                                        success: false,
+                                        error: {
+                                            message: "There was an error converting the to date into a datetime object."
+                                        }
+                                    }
+                                end
+                            else
+                                render :json => {
+                                    success: false,
+                                    error: {
+                                        message: "To date must be present to complete this request."
+                                    }
+                                }
+                            end
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "There was an error converting the from date to a datetime."
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "From date is required to complete this request."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: true,
+                        filteredRecords: [],
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "A user was not found with the given id."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "A user id must be present in this request."
+                }
+            }
+        end
+    end
+
     private
         def record_params
             params.require(:new_record_info).permit(:systolic, :diastolic, :notes, :right_arm_recorded)
