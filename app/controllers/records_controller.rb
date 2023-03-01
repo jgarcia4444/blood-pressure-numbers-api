@@ -271,9 +271,10 @@ class RecordsController < ApplicationController
                                             false
                                         end
                                     end
+                                    formatted_records = filtered_records.map{|record| record.format_for_frontend}
                                     render :json => {
                                         success: true,
-                                        filteredRecords: filtered_records,
+                                        filteredRecords: formatted_records,
                                     }
                                 else
                                     render :json => {
