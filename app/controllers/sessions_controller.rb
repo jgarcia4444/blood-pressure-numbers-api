@@ -71,4 +71,10 @@ class SessionsController < ApplicationController
             }
         end
     end
+
+    def welcome
+        render :json => {
+            message: "Welcome to the EC2 instance of the BPN API."
+        }
+    end
 end
