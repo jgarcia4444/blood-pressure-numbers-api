@@ -2,6 +2,7 @@
 class DayStreaksController < ApplicationController
 
     def create
+        puts "Create action triggered for day streak!"
         if params[:user_id]
             user_id = params[:user_id].to_i
             user = User.find_by(id: user_id)
@@ -45,6 +46,7 @@ class DayStreaksController < ApplicationController
     end
 
     def update
+        puts "Update action triggered for day streak!"
         if params[:update_info]
             update_info = params[:update_info]
             if update_info[:user_id]
