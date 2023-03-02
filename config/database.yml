@@ -77,3 +77,12 @@ development:
 test:
   <<: *default
   database: blood_pressure_numbers_api_test
+
+production:
+  <<: *default
+  database: blood_pressure_numbers_production
+  host: bpn-api-db.cie0vu0drtu2.us-west-1.rds.amazonaws.com
+  username: postgres
+  password: BloodPressure
+  host: dreambelieveachieveapiproduction.c7zsfombj3p9.us-west-1.rds.amazonaws.com,
+  port: 5432
