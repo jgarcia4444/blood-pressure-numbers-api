@@ -6,24 +6,37 @@ class UsersController < ApplicationController
                 email = new_user_info[:email]
                 if new_user_info[:password]
                     password = new_user_info[:password]
-                    created_user = User.create(email: email.downcase, password: password)
-                    if created_user.valid?
-                        render :json => {
-                            success: true,
-                            userInfo: {
-                                userId: created_user.id,
-                                email: created_user.email
+                    if new_user_info[:username]
+                        username = new_user_info[:username]
+                        created_user = User.create(email: email.downcase, password: password, username: username)
+                        if created_user.valid?
+                            render :json => {
+                                success: true,
+                                userInfo: {
+                                    userId: created_user.id,
+                                    email: created_user.email,
+                                    username: created_user.username,
+                                }
                             }
-                        }
+                        else
+                            general_error = {
+                                errorType: "GENERAL",
+                                message: "There was an error saving your user information."
+                            }
+                            render :json => {
+                                success: false,
+                                errors: [general_error],
+                                backendErrorData: created_user.errors.full_messages
+                            }
+                        end
                     else
                         general_error = {
-                            errorType: "GENERAL",
-                            message: "There was an error saving your user information."
+                            type: "Username",
+                            message: "A username must be present to create an account"
                         }
                         render :json => {
                             success: false,
-                            errors: [general_error],
-                            backendErrorData: created_user.errors.full_messages
+                            errors: [general_error]
                         }
                     end
                 else

@@ -16,7 +16,8 @@ class SessionsController < ApplicationController
                                 success: true,
                                 userInfo: {
                                     email: found_user.email,
-                                    userId: found_user.id
+                                    userId: found_user.id,
+                                    username: found_user.username,
                                 }
                             }
                         else
