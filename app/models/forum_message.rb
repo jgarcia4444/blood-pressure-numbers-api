@@ -4,7 +4,7 @@ class ForumMessage < ApplicationRecord
 
     def self.format_messages 
         messages = ForumMessage.all
-        messages.map do |forum_message| 
+        formatted = messages.map do |forum_message| 
             username = User.find_by(id: forum_message.user_id).username
             {
                 message: forum_message.message, 
@@ -12,6 +12,6 @@ class ForumMessage < ApplicationRecord
                 createdAt: forum_message.created_at
             }
         end
-        messages
+        formatted
     end
 end
