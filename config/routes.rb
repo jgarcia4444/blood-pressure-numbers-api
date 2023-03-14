@@ -22,4 +22,7 @@ Rails.application.routes.draw do
   put 'day-streak', to: "day_streaks#update"
 
   get 'records/filter/date-range/:from_date/:to_date/:user_id', to: "records#filtered_records"
+
+  get 'forum-messages', to: "forum_messages#index"
+  post 'forum-messages/add', to: "forum_messages#create"
 end
