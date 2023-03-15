@@ -6,8 +6,16 @@ class UsersController < ApplicationController
                 email = new_user_info[:email]
                 if new_user_info[:password]
                     password = new_user_info[:password]
+                    username = nil
                     if new_user_info[:username]
                         username = new_user_info[:username]
+                    end
+                    if User.find_by(username: username)
+                        render :json => {
+                            success: false,
+                            errors: [{errorType: "USERNAME", message: "Username is already taken."}]
+                        }
+                    else
                         created_user = User.create(email: email.downcase, password: password, username: username)
                         if created_user.valid?
                             render :json => {
@@ -29,16 +37,6 @@ class UsersController < ApplicationController
                                 backendErrorData: created_user.errors.full_messages
                             }
                         end
-                    else
-                        general_error = {
-                            type: "Username",
-                            message: "A username must be present to create an account"
-                        }
-                        render :json => {
-                            success: false,
-                            errors: [general_error]
-                        }
-                    end
                 else
                     no_pasword = {
                         errorType: "PASSWORD",
