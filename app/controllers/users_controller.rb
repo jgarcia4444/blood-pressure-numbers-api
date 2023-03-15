@@ -37,6 +37,7 @@ class UsersController < ApplicationController
                                 backendErrorData: created_user.errors.full_messages
                             }
                         end
+                    end
                 else
                     no_pasword = {
                         errorType: "PASSWORD",
