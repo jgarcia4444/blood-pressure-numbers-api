@@ -25,4 +25,6 @@ Rails.application.routes.draw do
 
   get 'forum-messages', to: "forum_messages#index"
   post 'forum-messages/add', to: "forum_messages#create"
+
+  put "users", to: "users#update_username"
 end

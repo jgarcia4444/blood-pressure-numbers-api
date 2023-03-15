@@ -267,6 +267,64 @@ class UsersController < ApplicationController
         end
     end
 
+    def update_username
+        if params[:user_info]
+            user_info = params[:user_info]
+            if user_info[:user_id]
+                user_id = user_info[:user_id]
+                user = User.find_by(id: user_id)
+                if user
+                    if user_info[:username]
+                        username = user_info[:username]
+                        user.update(username: username)
+                        if user.valid?
+                            render :json => {
+                                success: true,
+                                username: username,
+                            }
+                        else
+                            render :json => {
+                                success: false,
+                                error: {
+                                    message: "An error occurred attempting to add the username to your account",
+                                    errors: user.errors.full_messages
+                                }
+                            }
+                        end
+                    else
+                        render :json => {
+                            success: false,
+                            error: {
+                                message: "A valid username must be sent to process the request."
+                            }
+                        }
+                    end
+                else
+                    render :json => {
+                        success: false,
+                        error: {
+                            message: "A user could not be found with the given information."
+                        }
+                    }
+                end
+            else
+                render :json => {
+                    success: false,
+                    error: {
+                        message: "A user identifier is needed to complete this request."
+                    }
+                }
+            end
+        else
+            render :json => {
+                success: false,
+                error: {
+                    message: "User info was not sent back or configured properly."
+                }
+            }
+        end
+    end
+
     private
         def user_params
           params.require(:new_user_info).permit(:email, :password)  
