@@ -6,6 +6,7 @@ class User < ApplicationRecord
     has_many :forum_messages, dependent: :destroy
 
     validates :email, uniqueness: true
+    validates :username, uniqueness: true
 
 
     def format_user_records
